@@ -20,9 +20,14 @@ function CartListing({ cartProducts, setCartProducts, handleRemoveFromCart }) {
     );
   }
 
+  // Total price
   const totalPrice = Math.floor(
     cartProducts.reduce((sum, p) => sum + p.price * p.qty, 0)
   );
+
+  // 10% Discount
+  const discount = Math.floor(totalPrice * 0.1);
+  const finalTotal = Math.floor(totalPrice - discount);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 mt-[60px]">
@@ -35,7 +40,7 @@ function CartListing({ cartProducts, setCartProducts, handleRemoveFromCart }) {
             key={product.id}
             className="bg-white rounded-xl shadow p-4 mb-4 flex flex-col sm:flex-row gap-4 hover:shadow-md transition w-full max-w-full"
           >
-            {/* IMAGE FIX (never shrinks too small, never stretches) */}
+            {/* IMAGE FIX */}
             <div className="min-w-[100px] min-h-[100px] w-28 h-28 sm:w-32 sm:h-32 bg-gray-100 rounded-lg flex items-center justify-center mx-auto sm:mx-0">
               <img
                 src={product.image}
@@ -46,7 +51,6 @@ function CartListing({ cartProducts, setCartProducts, handleRemoveFromCart }) {
 
             {/* DETAILS */}
             <div className="flex flex-col flex-1 gap-2 min-w-0">
-              {/* WRAPPED TITLE — no overflow */}
               <h1 className="font-semibold text-lg break-words">
                 {product.title}
               </h1>
@@ -55,7 +59,6 @@ function CartListing({ cartProducts, setCartProducts, handleRemoveFromCart }) {
                 ₹{Math.floor(product.price)}
               </span>
 
-              {/* Rating */}
               <div className="flex items-center gap-1 text-gray-500 text-sm">
                 ⭐ {product.rating?.rate}
                 <span className="text-gray-400">
@@ -63,7 +66,7 @@ function CartListing({ cartProducts, setCartProducts, handleRemoveFromCart }) {
                 </span>
               </div>
 
-              {/* Quantity & Remove */}
+              {/* Qty Controls */}
               <div className="flex flex-wrap items-center gap-4 mt-2">
                 <div className="flex items-center gap-2">
                   <span className="text-sm">Qty</span>
@@ -111,16 +114,24 @@ function CartListing({ cartProducts, setCartProducts, handleRemoveFromCart }) {
           Price Details ({cartProducts.length} items)
         </h1>
 
+        {/* Total Price */}
         <div className="flex justify-between text-gray-700 text-lg">
-          <p className="underline decoration-dotted">Total Product Price</p>
+          <p>Total Product Price</p>
           <span>₹{totalPrice}</span>
+        </div>
+
+        {/* Discount */}
+        <div className="flex justify-between text-green-600 text-lg font-semibold">
+          <p>10% Discount</p>
+          <span>- ₹{discount}</span>
         </div>
 
         <hr />
 
+        {/* Final Total */}
         <div className="flex justify-between items-center">
           <h1 className="font-semibold text-2xl">Order Total</h1>
-          <span className="font-extrabold text-2xl">₹{totalPrice}</span>
+          <span className="font-extrabold text-2xl">₹{finalTotal}</span>
         </div>
 
         <button className="bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">
